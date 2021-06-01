@@ -46,8 +46,8 @@ class Smart_Segregator
      int moisture_sensor_pin;
      int touch_sensor_pin;
      int detect_touch;
-		 int moisture_value;
-		 float moisture_percentage;
+     int moisture_value;
+     float moisture_percentage;
  
      Servo servo;
 
@@ -91,7 +91,7 @@ class Smart_Segregator
     void execute()
     {
       detect_touch = digitalRead(touch_sensor_pin);
-			moisture_value = analogRead(moisture_sensor_pin);
+      moisture_value = analogRead(moisture_sensor_pin);
       moisture_percentage = ( 100 - ( (moisture_value/1023.00) * 100 ) );
 
       if (moisture_percentage <= 50.00 && detect_touch == true)
