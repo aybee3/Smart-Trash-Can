@@ -94,12 +94,12 @@ class Smart_Segregator
       moisture_value = analogRead(moisture_sensor_pin);
       moisture_percentage = ( 100 - ( (moisture_value/1023.00) * 100 ) );
 
-      if (moisture_percentage <= 50.00 && detect_touch == true)
+      if (moisture_percentage <= 20.00 && detect_touch == true)
       {
         dry_waste();
       }
 
-      else if (detect_moisture > 50.00 && detect_touch == true)
+      else if (detect_moisture > 20.00 && detect_touch == true)
       {
         wet_waste();
       }
