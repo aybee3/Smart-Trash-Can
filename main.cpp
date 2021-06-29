@@ -1,5 +1,5 @@
 /*
-   _____________________________________________________________
+   _____________________
   |
   | Description
   | -----------
@@ -35,17 +35,18 @@
   | execute()
   |       - Smart Segregator starts operating.
   |
-  |___________________________________________________________
+  |_____________________
   */
 #include <Servo.h>
 
 class Smart_Segregator
 {
   public:
+     int angle;
      int servo_pin;
      int moisture_sensor_pin;
      int touch_sensor_pin;
-     int detect_touch;
+     bool detect_touch;
      int moisture_value;
      float moisture_percentage;
  
@@ -75,31 +76,59 @@ class Smart_Segregator
 
     void dry_waste()
     {
-      servo.write(0);
+      for (angle = 90; angle >= 0; angle--)
+      {
+         servo.write(angle);
+         delay(20);
+      }
+     for(angle=0;angle<=90;angle++)
+      {
+         servo.write(angle);
+         delay(20); 
+      }
     }
 
     void wet_waste()
     {
-      servo.write(180);
+      for(angle = 90; angle <= 180; angle++){
+         servo.write(angle);
+         delay(20); 
+     }
+     for(angle = 180;angle >= 90; angle--){
+         servo.write(angle);
+         delay(20); 
+     }
     }
 
     void neutral_state()
     {
-      servo.write(90);
+     if(angle == 0)
+     {
+      for(angle = 0;angle <= 90;angle++){
+         servo.write(angle);
+         delay(20);
+      }
+     }
+     else if(angle==180)
+     {
+      for(angle=180;angle>=90;angle--)
+      servo.write(angle);
+      delay(20);
+       }
     }
-    
     void execute()
     {
       detect_touch = digitalRead(touch_sensor_pin);
       moisture_value = analogRead(moisture_sensor_pin);
       moisture_percentage = ( 100 - ( (moisture_value/1023.00) * 100 ) );
-
-      if (moisture_percentage <= 20.00 && detect_touch == true)
+      delay(1000);
+       
+   if (moisture_percentage <= 20.00 && detect_touch == true)
       {
         dry_waste();
       }
 
-      else if (detect_moisture > 20.00 && detect_touch == true)
+      else if(moisture_percentage > 20.00 && detect_touch == true)
       {
         wet_waste();
       }
@@ -111,7 +140,7 @@ class Smart_Segregator
     }
 }
 
-segregator = Smart_Segregator(8,A0,7);
+segregator = Smart_Segregator(9,A0,7);
 
 void setup() 
 {
